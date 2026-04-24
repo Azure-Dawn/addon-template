@@ -1,11 +1,8 @@
 package dev.gvvv.autohgw.listener;
 
-import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.client.input.KeyEvent;
-import net.labymod.api.Laby;
-import net.labymod.api.client.world.ClientWorld;
-
 import dev.gvvv.autohgw.key.AutoHGWKeybind;
+import net.labymod.api.client.event.keyboard.KeyEvent;
+import net.labymod.api.event.Subscribe;
 
 public class KeyListener {
 
@@ -17,12 +14,18 @@ public class KeyListener {
 
     @Subscribe
     public void onKey(KeyEvent event) {
-        if (!event.isPressed()) return;
-        if (!this.keybind.isPressed()) return;
 
-        ClientWorld world = Laby.labyAPI().minecraft().getClientWorld();
-        if (world == null) return;
+        // Neue API: check ob Taste gedrückt wurde
+        if (event.action() != KeyEvent.Action.PRESS) {
+            return;
+        }
 
-        Laby.labyAPI().minecraft().chatExecutor().chat("HGW");
+        // Prüfen ob unser Keybind gedrückt wurde
+        if (event.key() != keybind.getDefaultKey()) {
+            return;
+        }
+
+        // 👉 Hier kommt dein Feature rein
+        System.out.println("AutoHGW aktiviert!");
     }
 }
