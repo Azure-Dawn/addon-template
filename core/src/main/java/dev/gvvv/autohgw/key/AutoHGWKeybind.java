@@ -1,10 +1,11 @@
 package dev.gvvv.autohgw.key;
 
+import net.labymod.api.client.options.keybinding.KeyBinding;
 import net.labymod.api.client.gui.screen.key.Key;
 
-public class AutoHGWKeybind {
+public class AutoHGWKeybind extends KeyBinding {
 
     public AutoHGWKeybind() {
-        // Keybind Logik muss später über LabyMod Registrierung passieren
+        super("Auto HGW", Key.NONE, "AutoHGW");
     }
 }
