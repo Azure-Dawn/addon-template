@@ -1,33 +1,28 @@
-name: LabyAddon Build
+name: Build Addon
 
 on:
   push:
-    branches: [ "master", "main" ]
   pull_request:
-    branches: [ "master", "main" ]
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v5
-      - name: Set up JDK 25
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Java 17 installieren
         uses: actions/setup-java@v4
         with:
-          distribution: 'corretto'
-          java-version: '25'
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          validate-wrappers: true
-          cache-read-only: ${{ github.ref != format('refs/heads/{0}', github.event.repository.default_branch) }}
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-      - name: Build with Gradle
-        run: ./gradlew build --full-stacktrace
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: Artifacts
-          path: build/libs/*-release.jar
+          distribution: temurin
+          java-version: 17
+
+      - name: Gradle Cache
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Rechte für Gradle setzen
+        run: chmod +x ./gradlew
+
+      - name: Build ausführen
+        run: ./gradlew build --no-daemon
