@@ -1,13 +1,23 @@
-import net.labymod.labygradle.common.extension.LabyModAnnotationProcessorExtension.ReferenceType
-
-dependencies {
-    labyProcessor()
-    api(project(":api"))
-
-    // An example of how to add an external dependency that is used by the addon.
-    // addonMavenDependency("org.jeasy:easy-random:5.0.0")
+plugins {
+    java
 }
 
-labyModAnnotationProcessor {
-    referenceType = ReferenceType.DEFAULT
+repositories {
+    mavenCentral()
+
+    maven {
+        name = "labymod"
+        url = uri("https://dist.labymod.net/api/v1/maven/release/")
+    }
+}
+
+dependencies {
+    // Zugriff auf API aus dem api-Modul
+    implementation(project(":api"))
+
+    // LabyMod API
+    compileOnly("net.labymod.api:addon:4.0.0")
+
+    // Annotation Processor (SEHR WICHTIG)
+    annotationProcessor("net.labymod.api:addon:4.0.0")
 }
